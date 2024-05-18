@@ -138,6 +138,78 @@ func main() {
 	checkType(e)
 	d := multiple(2, 3)
 	checkType(d)
+	theATMApplication()
+}
+
+func theATMApplication() {
+	var balance uint64 = 10000
+	const pinCode uint64 = 123456
+	const ACT_CHECK_BALANCE = 1
+	const ACT_WITHDRAW = 2
+	const ACT_TRANFERS = 3
+	const ACT_EXIT = 4
+	const WRONG_PIN_LIMIT = 5
+	var numberOfTries int8 = 0
+	fmt.Println("Welcome to our ATM")
+
+	// check pinCode, if user enter pinCode wrong 5 times, block their card
+	for {
+		var inputPinCode uint64
+		fmt.Print("Please enter your pin: ")
+		fmt.Scan(&inputPinCode)
+		if inputPinCode != pinCode {
+			numberOfTries += 1
+			if numberOfTries < WRONG_PIN_LIMIT {
+				fmt.Println("In correct pin, please try again")
+				continue
+			} else {
+				// otherwise, block their card, and stop the program
+				fmt.Printf("You have been enter wrong pin for %v times\n", WRONG_PIN_LIMIT)
+				fmt.Print("We will lock your card, please go to your bank branch for support!\n")
+				return
+			}
+		}
+		// if no error
+		break
+	}
+	// if user already pass the authorization, process next step
+	for {
+		options := ""
+		options += fmt.Sprintf("\n1. Check balance\n")
+		options += fmt.Sprintf("2. Withdraw\n")
+		options += fmt.Sprintf("3. Transfer\n")
+		options += fmt.Sprintf("4. Exit\n")
+		fmt.Println(options)
+		var choice int8
+		fmt.Print("Please select your choice: ")
+		fmt.Scan(&choice)
+		if choice == ACT_EXIT {
+			break
+		}
+		if choice == ACT_CHECK_BALANCE {
+			checkBalance(balance)
+			continue
+		}
+		if choice == ACT_WITHDRAW {
+			var withdrawNumber uint64
+			fmt.Print("Please enter your withdraw amount: ")
+			fmt.Scan(&withdrawNumber)
+			if withdrawNumber > balance {
+				fmt.Println("Invalid amount, you can not withdraw more than you have!")
+				continue
+			}
+			// if it is okie
+			balance = balance - withdrawNumber
+			fmt.Printf("Balance updated! New amount: %v\n", balance)
+			continue
+		}
+		break
+	}
+	fmt.Println("Thank you for using our service!")
+}
+
+func checkBalance(balance uint64) {
+	fmt.Printf("Your balance is %v\n", balance)
 }
 
 // explicit return
