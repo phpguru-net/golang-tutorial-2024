@@ -78,7 +78,7 @@ func calculateProfit() {
 	fmt.Println(output)
 }
 
-func main() {
+func main_001() {
 	fmt.Println("Welcome to Golang Tutorial 2024!!!")
 	// same as python, your data type can be inferred
 	// but you should declare your data type explicitly
