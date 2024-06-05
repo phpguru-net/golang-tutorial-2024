@@ -61,16 +61,21 @@ func main() {
 	var k *hero.Knight = hero.NewKnight()
 	fmt.Println(k.GetInformation())
 	hero.HeroAttack(k)
+	fmt.Println(k.GetInformation())
 
 	var archer *hero.Archer = hero.NewArcher()
 	fmt.Println(archer.GetInformation())
 	hero.HeroAttack(archer)
+	fmt.Println(archer.GetInformation())
 
 	var spearMan *hero.SpearMan = hero.NewSpearMan()
 	fmt.Println(spearMan.GetInformation())
 	hero.HeroAttack(spearMan)
+	fmt.Println(spearMan.GetInformation())
 
 	var swordMan *hero.SwordMan = hero.NewSwordMan()
 	fmt.Println(swordMan.GetInformation())
 	hero.HeroAttack(swordMan)
+	fmt.Println(swordMan.GetInformation())
+
 }

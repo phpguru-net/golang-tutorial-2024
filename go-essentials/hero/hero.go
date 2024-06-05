@@ -5,7 +5,12 @@ import (
 	"strings"
 )
 
+type Soldier interface {
+	Match()
+}
+
 type Hero interface {
+	Soldier
 	Attack()
 }
 
@@ -24,12 +29,22 @@ func (k *Knight) Attack() {
 	fmt.Println("Charging")
 }
 
+func (k *Knight) Match() {
+	k.stamina -= 10
+	fmt.Println("Matching")
+}
+
 type Archer struct {
 	Character
 }
 
 func (k *Archer) Attack() {
 	fmt.Println("Firing")
+}
+
+func (k *Archer) Match() {
+	k.stamina -= 10
+	fmt.Println("Matching")
 }
 
 type SpearMan struct {
@@ -40,12 +55,22 @@ func (k *SpearMan) Attack() {
 	fmt.Println("Defend")
 }
 
+func (k *SpearMan) Match() {
+	k.stamina -= 10
+	fmt.Println("Matching")
+}
+
 type SwordMan struct {
 	Character
 }
 
 func (k *SwordMan) Attack() {
 	fmt.Println("Attack")
+}
+
+func (k *SwordMan) Match() {
+	k.stamina -= 10
+	fmt.Println("Matching")
 }
 
 func (c *Character) GetInformation() string {
@@ -104,5 +129,23 @@ func NewSwordMan() *SwordMan {
 }
 
 func HeroAttack(hero Hero) {
+	switch hero.(type) {
+	case *SwordMan:
+		fmt.Println("SwordMan")
+	case *Knight:
+		fmt.Println("Knight")
+	}
+
+	archer, isArcher := hero.(*Archer)
+	if isArcher {
+		fmt.Println(archer.name)
+	}
+
+	spearMan, isSpearMan := hero.(*SpearMan)
+	if isSpearMan {
+		fmt.Println(spearMan.name)
+	}
+
+	hero.Match()
 	hero.Attack()
 }
