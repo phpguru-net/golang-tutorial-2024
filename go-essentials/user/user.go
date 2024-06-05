@@ -15,10 +15,10 @@ func (id ID) GenerateUUID() string {
 }
 
 type User struct {
-	id        ID
-	firstName string
-	lastName  string
-	prize     string
+	ID        ID
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Prize     string
 }
 
 type Winner struct {
@@ -29,7 +29,7 @@ type Winner struct {
 // receiver argument
 func (u *User) DisplayUser() string {
 	output := ""
-	output += fmt.Sprintf("ID: %v\nName: %v %v\nPrize: %v", u.id, u.firstName, u.lastName, u.prize)
+	output += fmt.Sprintf("ID: %v\nName: %v %v\nPrize: %v", u.ID, u.FirstName, u.LastName, u.Prize)
 	return output
 }
 
@@ -40,7 +40,7 @@ func (u *Winner) DisplayUser() string {
 }
 
 func (u *User) SetPrize(prize string) {
-	u.prize = prize
+	u.Prize = prize
 }
 
 // A pattern to create new struct
@@ -49,10 +49,10 @@ func New(id ID, firstName string, lastName string, prize string) (*User, error) 
 		return nil, errors.New("ID, First name and last name are required!")
 	}
 	return &User{
-		id:        id,
-		firstName: firstName,
-		lastName:  lastName,
-		prize:     prize,
+		ID:        id,
+		FirstName: firstName,
+		LastName:  lastName,
+		Prize:     prize,
 	}, nil
 }
 
@@ -60,10 +60,10 @@ func NewWinner(email string, u *User) *Winner {
 	return &Winner{
 		email: email,
 		User: User{
-			id:        u.id,
-			firstName: u.firstName,
-			lastName:  u.lastName,
-			prize:     u.prize,
+			ID:        u.ID,
+			FirstName: u.FirstName,
+			LastName:  u.LastName,
+			Prize:     u.Prize,
 		},
 	}
 }

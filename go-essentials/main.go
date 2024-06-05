@@ -4,10 +4,14 @@ import (
 	"fmt"
 	"strings"
 
+	"phpguru.net/go-essentials/helpers"
+	"phpguru.net/go-essentials/persistent"
 	"phpguru.net/go-essentials/user"
 )
 
 // https://pkg.go.dev/
+
+const FILE_PATH string = "users.json"
 
 func main() {
 	fmt.Println("This is the main entry point of your go application!")
@@ -38,4 +42,18 @@ func main() {
 
 	winner := user.NewWinner("phpguru.net@sonnm.com", u)
 	fmt.Println(winner.DisplayUser())
+
+	// test write file
+	fileStorage := persistent.New(FILE_PATH)
+	data, err := helpers.ParseJSON(u)
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+
+	err = fileStorage.SaveData(data)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
 }
