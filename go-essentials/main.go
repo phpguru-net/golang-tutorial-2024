@@ -78,4 +78,16 @@ func main() {
 	hero.HeroAttack(swordMan)
 	fmt.Println(swordMan.GetInformation())
 
+	// generic example
+	var a, b int64
+	a = 10
+	b = 99
+	c := helpers.Add(a, b)
+	fmt.Printf("%v + %v = %v", a, b, c)
+
+	var e, f float64
+	e = 0.3
+	f = 0.2
+	g := e - f
+	fmt.Printf("%v + %v = %v", e, f, g)
 }
