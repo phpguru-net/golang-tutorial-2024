@@ -12,3 +12,9 @@ source ~/.zshrc  # or source ~/.bash_profile
 ```
 
 > go version go1.22.3 darwin/arm64
+
+## Common packages
+
+```sh
+go get github.com/google/uuid
+```

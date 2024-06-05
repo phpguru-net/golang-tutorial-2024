@@ -4,9 +4,16 @@ package user
 import (
 	"errors"
 	"fmt"
+
+	"github.com/google/uuid"
 )
 
-type ID int64
+type ID string
+
+func (id ID) GenerateUUID() string {
+	return uuid.New().String()
+}
+
 type User struct {
 	id        ID
 	firstName string
@@ -38,7 +45,7 @@ func (u *User) SetPrize(prize string) {
 
 // A pattern to create new struct
 func New(id ID, firstName string, lastName string, prize string) (*User, error) {
-	if id == 0 || firstName == "" || lastName == "" {
+	if id == "" || firstName == "" || lastName == "" {
 		return nil, errors.New("ID, First name and last name are required!")
 	}
 	return &User{

@@ -24,7 +24,8 @@ func main() {
 	fmt.Println(*expectedIncomePointer)
 
 	// I need to test something related to struct
-	u, err := user.New(1, "I love", "Golang", "")
+	var id user.ID
+	u, err := user.New(user.ID(id.GenerateUUID()), "I love", "Golang", "")
 	if err != nil {
 		fmt.Println(err)
 		//panic(err)
