@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"phpguru.net/go-essentials/helpers"
+	"phpguru.net/go-essentials/hero"
 	"phpguru.net/go-essentials/persistent"
 	"phpguru.net/go-essentials/user"
 )
@@ -56,4 +57,20 @@ func main() {
 		fmt.Println(err.Error())
 	}
 
+	// test with interface
+	var k *hero.Knight = hero.NewKnight()
+	fmt.Println(k.GetInformation())
+	hero.HeroAttack(k)
+
+	var archer *hero.Archer = hero.NewArcher()
+	fmt.Println(archer.GetInformation())
+	hero.HeroAttack(archer)
+
+	var spearMan *hero.SpearMan = hero.NewSpearMan()
+	fmt.Println(spearMan.GetInformation())
+	hero.HeroAttack(spearMan)
+
+	var swordMan *hero.SwordMan = hero.NewSwordMan()
+	fmt.Println(swordMan.GetInformation())
+	hero.HeroAttack(swordMan)
 }
