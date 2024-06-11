@@ -181,4 +181,96 @@ func main() {
 	for key, value := range ratings {
 		fmt.Printf("%v:%v\n", key, value)
 	}
+
+	/*
+	* Functions:
+	* - Using functions as values
+	* - Anonymous Functions
+	* - Recursion
+	* - Variadic
+	 */
+	nums := make([]int64, len(numbers))
+	for i := 0; i < len(numbers); i++ {
+		nums[i] = numbers[i]
+	}
+	transform2 := getTransformerFn("double")
+	transform3 := getTransformerFn("tripple")
+
+	dnumbers := transformNumber(&nums, transform2)
+	tnumbers := transformNumber(&nums, transform3)
+	quadrupleNumbers := transformNumber(&nums, func(n int64) int64 {
+		return n * 4
+	})
+	quintupleNumbers := transformNumber(&nums, createTransformerFn(5))
+	fmt.Println(*dnumbers)
+	fmt.Println(*tnumbers)
+	fmt.Println(*transformNumber(&nums, createTransformerFn(6)))
+	fmt.Println(*quadrupleNumbers)
+	fmt.Println(*quintupleNumbers)
+	fmt.Println(strings.Repeat("*", 20))
+	fmt.Println(*transformNumber(&nums, func(n int64) int64 {
+		return factorial(n)
+	}))
+	var cond Condition = func(n int64) bool {
+		return n%2 == 0
+	}
+	fmt.Println(sumif(cond, 1, 2, 3, 4, 5, 6))
+	fmt.Println(sumif(cond, *dnumbers...))
+
+	staticArray := [9]any{1, 2, 3, 4, 5, 6, "a", "b", "c"}
+	slicesArray := staticArray[:]
+	slicesArray = append(slicesArray, "d", "e", "f")
+	fmt.Println(slicesArray)
+}
+
+type transformFn func(int64) int64
+
+func getTransformerFn(transformType string) transformFn {
+	if transformType == "tripple" {
+		return tripple
+	}
+	return double
+}
+
+func createTransformerFn(factor int64) transformFn {
+	return func(n int64) int64 {
+		return n * factor
+	}
+}
+
+func transformNumber(numbers *[]int64, transform transformFn) *[]int64 {
+	dNumbers := make([]int64, len(*numbers))
+	for index, value := range *numbers {
+		dNumbers[index] = transform(value)
+	}
+	return &dNumbers
+}
+
+func double(n int64) int64 {
+	return n * 2
+}
+
+func tripple(n int64) int64 {
+	return n * 3
+}
+
+// recursion
+
+func factorial(n int64) int64 {
+	if n == 0 {
+		return 1
+	}
+	return n * factorial(n-1)
+}
+
+type Condition func(n int64) bool
+
+func sumif(condition Condition, numbers ...int64) int64 {
+	var total int64
+	for _, value := range numbers {
+		if condition(value) {
+			total += value
+		}
+	}
+	return int64(total)
 }
