@@ -7,12 +7,15 @@ import (
 	"phpguru.net/go-essentials/helpers"
 	"phpguru.net/go-essentials/hero"
 	"phpguru.net/go-essentials/persistent"
+	"phpguru.net/go-essentials/product"
 	"phpguru.net/go-essentials/user"
 )
 
 // https://pkg.go.dev/
 
 const FILE_PATH string = "users.json"
+
+type TechStackMap map[string]float64
 
 func main() {
 	fmt.Println("This is the main entry point of your go application!")
@@ -89,5 +92,93 @@ func main() {
 	e = 0.3
 	f = 0.2
 	g := e - f
-	fmt.Printf("%v + %v = %v", e, f, g)
+	fmt.Printf("%v + %v = %v\n", e, f, g)
+
+	// playing with array
+	var numbers [4]int64 = [4]int64{1, 2, 3, 4}
+	for i := 0; i < len(numbers); i++ {
+		fmt.Printf("%v\n", numbers[i])
+	}
+	// for i := 0; i < len(numbers); i++ {
+	// 	numbers[i] *= 2
+	// }
+	for i := 0; i < len(numbers); i++ {
+		fmt.Printf("%v\n", numbers[i])
+	}
+	fmt.Println(numbers[0:3]) // [1,2,3]
+	fmt.Println(numbers[1:])  // [2,3,4]
+	fmt.Println(numbers[4:])  // []
+	fmt.Println(cap(numbers))
+
+	// create dynamic lists with slice
+	goldPrices := []float64{1.5, 2.55}
+	fmt.Println(goldPrices)
+	goldPrices = append(goldPrices, 1)
+	goldPrices = append(goldPrices, 2)
+	for i := 0; i < len(goldPrices); i++ {
+		goldPrices[i] += 0.1
+	}
+	fmt.Println(goldPrices)
+
+	// create array of Product
+	products := []*product.Product{
+		{"1", "Mouse 1", 1.51},
+	}
+	products = append(products,
+		product.New("2", "Mouse 2", 1.52),
+		product.New("3", "Mouse 3", 1.53),
+	)
+
+	for i := 0; i < len(products); i++ {
+		fmt.Printf("%v\n", products[i].Title)
+	}
+
+	discountProducts := []*product.Product{
+		{"4", "Mouse 4", 1.54},
+		{"5", "Mouse 5", 1.55},
+	}
+
+	products = append(products, discountProducts...)
+	for i := 0; i < len(products); i++ {
+		fmt.Printf("%v\n", products[i].Title)
+	}
+
+	// map
+	matrix := map[string]string{}
+	matrix["nextjsvietnam"] = "https://nextjsvietnam.com"
+	matrix["phpguru"] = "https://phpguru.net"
+
+	websites := []string{"nextjsvietnam", "phpguru"}
+	for i := 0; i < len(websites); i++ {
+		fmt.Println(matrix[websites[i]])
+	}
+	delete(matrix, "nextjsvietnam")
+
+	// make
+	students := make([]string, 5, 6)
+	students[0] = "A"
+	students[1] = "B"
+	students[2] = "C"
+	students[3] = "D"
+	students[4] = "E"
+	students = append(students, "F")
+	fmt.Println(students)
+
+	// optimize memory for map with make
+	ratings := make(TechStackMap, 3)
+
+	ratings["nextjs"] = 8.5
+	ratings["wordpress"] = 9.75
+
+	fmt.Println(ratings)
+
+	for index, value := range students {
+		fmt.Printf("%v:%v\n", index, value)
+	}
+
+	fmt.Println(strings.Repeat("*", 10))
+
+	for key, value := range ratings {
+		fmt.Printf("%v:%v\n", key, value)
+	}
 }
