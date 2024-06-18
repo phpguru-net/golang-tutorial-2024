@@ -50,3 +50,25 @@ func NewHelpApp() appbase.App {
 		},
 	}
 }
+
+func ParseArgs(payload ...any) ([]string, bool) {
+	// make an array
+	args := make([]string, len(payload))
+	for i, v := range payload {
+		str, ok := v.(string)
+		if !ok {
+			fmt.Println("Error: all elements in payload must be strings")
+			return args, false
+		}
+		args[i] = str
+	}
+	return args, true
+}
+
+func ParseAny(payload []string) []any {
+	args := make([]any, len(payload))
+	for i, v := range payload {
+		args[i] = v
+	}
+	return args
+}

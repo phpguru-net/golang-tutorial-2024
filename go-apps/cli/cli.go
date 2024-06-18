@@ -48,7 +48,7 @@ func ReadArgs() {
 	// otherwise second args ( index = 1 ) is the command
 	switch args[1] {
 	case LeapYear:
-		apps[LeapYear].Run()
+		apps[LeapYear].Run(help.ParseAny(os.Args[2:])...)
 	case BMI:
 		fmt.Println(args[1])
 	case CompoundInterest:
