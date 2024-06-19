@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"phpguru.net/go-apps/appbase"
+	"phpguru.net/go-apps/bmi"
 	"phpguru.net/go-apps/help"
 	"phpguru.net/go-apps/leapyear"
 )
@@ -22,6 +23,7 @@ func getApps() map[string]appbase.App {
 	apps[Help] = help.NewHelpApp()
 	// apps[Version] = "display version"
 	apps[LeapYear] = leapyear.NewLeapApp()
+	apps[BMI] = bmi.NewBmiApp()
 	return apps
 }
 
@@ -46,11 +48,12 @@ func ReadArgs() {
 		os.Exit(1)
 	}
 	// otherwise second args ( index = 1 ) is the command
+	payload := help.ParseAny(os.Args[2:])
 	switch args[1] {
 	case LeapYear:
-		apps[LeapYear].Run(help.ParseAny(os.Args[2:])...)
+		apps[LeapYear].Run(payload...)
 	case BMI:
-		fmt.Println(args[1])
+		apps[BMI].Run(payload...)
 	case CompoundInterest:
 		fmt.Println(args[1])
 	default:

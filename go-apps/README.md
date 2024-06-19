@@ -56,11 +56,6 @@ calculator -app=bmi -w=64 -h=1.64
       "IDI_WPRO": { "min": 18.5, "max": 22.99 }
     },
     {
-      "Classification": "Overweight",
-      "WHO": { "min": 25, "max": null },
-      "IDI_WPRO": { "min": 23, "max": null }
-    },
-    {
       "Classification": "Pre-obesity",
       "WHO": { "min": 25, "max": 29.99 },
       "IDI_WPRO": { "min": 23, "max": 24.99 }
