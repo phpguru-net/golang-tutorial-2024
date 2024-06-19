@@ -41,7 +41,24 @@ func (l *LeapYear) Run(payload ...any) {
 		leapYearCmd.Usage()
 		os.Exit(1)
 	}
-	fmt.Printf("The year [%v] %v Leap Year and has [%v] days\n", *leapYearNumber, "is", 366)
+	isLeapYear := isLeapYear(*leapYearNumber)
+	var isLeapYearText string = "is not"
+	totalDays := 365
+	if isLeapYear {
+		totalDays = 366
+		isLeapYearText = "is"
+	}
+	fmt.Printf("The year [%v] %v Leap Year and has [%v] days\n", *leapYearNumber, isLeapYearText, totalDays)
+}
+
+func isLeapYear(year int) bool {
+	if year%400 == 0 {
+		return true
+	}
+	if year%4 == 0 && year%100 != 0 {
+		return true
+	}
+	return false
 }
 
 func NewLeapApp() appbase.App {
