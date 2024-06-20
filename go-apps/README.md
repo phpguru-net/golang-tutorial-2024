@@ -94,6 +94,10 @@ calculator -app=ci -pv=1000000 -r=1 n=12
 
 Output: AV (Future value) = ...
 
+```math
+A = P * (1+r)^n
+```
+
 ## References
 
 - [Command line flags](https://gobyexample.com/command-line-flags)

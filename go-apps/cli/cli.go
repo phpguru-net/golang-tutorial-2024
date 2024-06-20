@@ -1,11 +1,11 @@
 package cli
 
 import (
-	"fmt"
 	"os"
 
 	"phpguru.net/go-apps/appbase"
 	"phpguru.net/go-apps/bmi"
+	"phpguru.net/go-apps/compound_interest"
 	"phpguru.net/go-apps/help"
 	"phpguru.net/go-apps/leapyear"
 )
@@ -24,6 +24,7 @@ func getApps() map[string]appbase.App {
 	// apps[Version] = "display version"
 	apps[LeapYear] = leapyear.NewLeapApp()
 	apps[BMI] = bmi.NewBmiApp()
+	apps[CompoundInterest] = compound_interest.NewCompoundInterestApp()
 	return apps
 }
 
@@ -55,7 +56,7 @@ func ReadArgs() {
 	case BMI:
 		apps[BMI].Run(payload...)
 	case CompoundInterest:
-		fmt.Println(args[1])
+		apps[CompoundInterest].Run(payload...)
 	default:
 		displayHelp()
 	}
