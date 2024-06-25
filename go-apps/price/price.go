@@ -14,9 +14,9 @@ type TaxIncludedPriceJob struct {
 }
 
 type Result struct {
-	TaxRate          int
-	InputPrices      []float64
-	TaxIncludedPrice map[string]string
+	TaxRate          int               `json:"-"`
+	InputPrices      []float64         `json:"input_prices"`
+	TaxIncludedPrice map[string]string `json:"tax_included_price"`
 }
 
 func NewTaxIncludedPriceJob(prices *[]float64, taxRates *[]int, pricesIncludedTax *[][]float64) *TaxIncludedPriceJob {
