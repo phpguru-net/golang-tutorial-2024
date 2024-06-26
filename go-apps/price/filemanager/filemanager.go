@@ -4,7 +4,9 @@ import (
 	"bufio"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"os"
+	"time"
 )
 
 type FileManager struct {
@@ -34,18 +36,28 @@ func (fm *FileManager) ReadLines() ([]string, error) {
 	return lines, nil
 }
 
-func WriteJsonFile(path string, data interface{}) error {
+func WriteJsonFile(path string, data interface{}, c chan bool, ec chan error) error {
+	time.Sleep(3 * time.Second)
 	file, err := os.Create(path)
+
+	// test error
+	// ec <- errors.New("Something wrong")
+
 	if err != nil {
+		ec <- err
 		return err
 	}
+	// after every run, always close file
+	defer file.Close()
+	defer fmt.Printf("File %f closed!!!\n", path)
 
 	encoder := json.NewEncoder(file)
 	err = encoder.Encode(data)
 	if err != nil {
+		ec <- err
 		return errors.New("Failed to convert data to JSON")
 	}
-	file.Close()
+	c <- true
 	return nil
 }
 

@@ -62,8 +62,13 @@ func (job *TaxIncludedPriceJob) Process() {
 	job.ReadPricesFromFile("../prices.txt")
 	job.taxRates = []int{10, 20, 30}
 
-	for _, taxRate := range job.taxRates {
+	channels := make([]chan bool, len(job.taxRates))
+	errorChannels := make([]chan error, len(job.prices))
+
+	for taxRateIndex, taxRate := range job.taxRates {
 		pricesIncludedTax := make(map[string]string)
+		channels[taxRateIndex] = make(chan bool)
+		errorChannels[taxRateIndex] = make(chan error)
 		for _, price := range job.prices {
 			taxIncludedPrice := price*1 + float64(taxRate)/100
 			pricesIncludedTax[fmt.Sprintf("%.2f", price)] = fmt.Sprintf("%.2f", taxIncludedPrice)
@@ -73,7 +78,26 @@ func (job *TaxIncludedPriceJob) Process() {
 			InputPrices:      job.prices,
 			TaxIncludedPrice: pricesIncludedTax,
 		}
-		filemanager.WriteJsonFile(fmt.Sprintf("result_%v.json", taxRate), result)
+		go filemanager.WriteJsonFile(fmt.Sprintf("result_%v.json", taxRate), result, channels[taxRateIndex], errorChannels[taxRateIndex])
 	}
 
+	for index := range job.taxRates {
+		select {
+		case err := <-errorChannels[index]:
+			if err != nil {
+				fmt.Println(err)
+			}
+
+		case <-channels[index]:
+			fmt.Println("Done!")
+		}
+	}
+
+	// for _, c := range errorChannels {
+	// 	<-c
+	// }
+
+	// for _, c := range channels {
+	// 	<-c
+	// }
 }
