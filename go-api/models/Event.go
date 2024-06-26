@@ -7,12 +7,12 @@ import (
 )
 
 type Event struct {
-	ID          int64
-	Name        string
-	Description string
-	Location    string
-	DateTime    time.Time
-	UserID      int
+	ID          int64     `binding:"required"`
+	Name        string    `binding:"required"`
+	Description string    `binding:"required"`
+	Location    string    `binding:"required"`
+	DateTime    time.Time `binding:"required"`
+	UserID      int       `binding:"required"`
 }
 
 var events = []Event{}
@@ -68,4 +68,37 @@ func GetEventById(id int64) (*Event, error) {
 		return nil, err
 	}
 	return &event, err
+}
+
+func (event *Event) Update() error {
+
+	query := `
+        UPDATE events
+        SET name = ?, description = ?, location = ?, dateTime = ?, user_id = ?
+        WHERE id = ?
+    `
+	stmt, err := db.GetDB().Prepare(query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(event.Name, event.Description, event.Location, event.DateTime, event.UserID, event.ID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func DeleteEventById(id int64) error {
+	query := "DELETE from events where id = ?"
+	stmt, err := db.GetDB().Prepare(query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+	_, err = stmt.Exec(id)
+	// rs.RowsAffected()
+	return err
 }
