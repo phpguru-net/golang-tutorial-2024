@@ -98,3 +98,68 @@ func deleteEventHandler(c *gin.Context) {
 	}
 	c.JSON(http.StatusNoContent, nil)
 }
+
+func registerOnEventHandler(c *gin.Context) {
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadGateway, gin.H{
+			"message": "Can not parse id",
+		})
+		return
+	}
+	event, err := models.GetEventById(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, err)
+		return
+	}
+	userId := c.GetInt64("userId")
+	err = event.Register(userId)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Internal server error",
+			"error":   err.Error(),
+		})
+		return
+	}
+	c.Status(http.StatusCreated)
+}
+
+func cancelRegistrationOnEventHandler(c *gin.Context) {
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadGateway, gin.H{
+			"message": "Can not parse id",
+		})
+		return
+	}
+	event, err := models.GetEventById(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, err)
+		return
+	}
+	userId := c.GetInt64("userId")
+	err = event.CancelRegistration(userId)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Internal server error",
+		})
+		return
+	}
+	c.Status(http.StatusNoContent)
+}
+
+func getRegisterEventsHandler(c *gin.Context) {
+	userId := c.GetInt64("userId")
+
+	events, err := models.GetAllRegisteredEvents(userId)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Internal server error",
+			"error":   err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"events": events,
+	})
+}

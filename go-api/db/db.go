@@ -69,7 +69,23 @@ func createEventsTable(db *sql.DB) {
 	query(db, createEventsTable)
 }
 
+func createRegisterEventsTable(db *sql.DB) {
+
+	createRegisteredEventsTable := `
+        CREATE TABLE IF NOT EXISTS register_events (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            event_id INTEGER,
+            user_id INTEGER,
+			FOREIGN KEY(user_id) REFERENCES users(id),
+			FOREIGN KEY(event_id) REFERENCES events(id)
+			CONSTRAINT UC_EVENT_USER UNIQUE (event_id, user_id)
+        );
+    `
+	query(db, createRegisteredEventsTable)
+}
+
 func createTables(db *sql.DB) {
 	createUsersTable(db)
 	createEventsTable(db)
+	createRegisterEventsTable(db)
 }
