@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"sync"
 
@@ -32,7 +33,28 @@ func GetDB() *sql.DB {
 }
 
 // createTables creates the necessary tables if they do not already exist.
-func createTables(db *sql.DB) {
+
+func query(db *sql.DB, query string) {
+	_, err := db.Exec(query)
+	if err != nil {
+		log.Fatalf("Error creating table: %v", err)
+		panic(fmt.Sprintf("Error creating table: %v", err))
+	}
+}
+
+func createUsersTable(db *sql.DB) {
+	createUsersTable := `
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            email TEXT NOT NULL UNIQUE,
+			password TEXT NULL
+        );
+    `
+	query(db, createUsersTable)
+}
+
+func createEventsTable(db *sql.DB) {
+
 	createEventsTable := `
         CREATE TABLE IF NOT EXISTS events (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -40,11 +62,14 @@ func createTables(db *sql.DB) {
             description TEXT NOT NULL,
             location TEXT NOT NULL,
             dateTime DATETIME NOT NULL,
-            user_id INTEGER
+            user_id INTEGER,
+			FOREIGN KEY(user_id) REFERENCES users(id)
         );
     `
-	_, err := db.Exec(createEventsTable)
-	if err != nil {
-		log.Fatalf("Error creating table: %v", err)
-	}
+	query(db, createEventsTable)
+}
+
+func createTables(db *sql.DB) {
+	createUsersTable(db)
+	createEventsTable(db)
 }

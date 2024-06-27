@@ -1,6 +1,12 @@
 GET http://localhost:8080/events
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNvbnRhY3RAcGhwZ3VydS5uZXQiLCJleHAiOjE3MTk0ODc2MDcsInVzZXJJZCI6MX0.OUfie2cgOE2bgzyC8-wFOLh_uFtzm_rFnzS44XRYyw4
+Content-Type: application/json
+
+GET http://localhost:8080/events
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQHBocGd1cnUubmV0IiwiZXhwIjoxNzE5NDg4MTQ0LCJ1c2VySWQiOjJ9.bbZCA6WBsQo36bV41LIlqP-qhVDLqE4A0g8hWMB2y1A
 Content-Type: application/json
 
 
 GET http://localhost:8080/events/2
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNvbnRhY3RAcGhwZ3VydS5uZXQiLCJleHAiOjE3MTk0ODc2MDcsInVzZXJJZCI6MX0.OUfie2cgOE2bgzyC8-wFOLh_uFtzm_rFnzS44XRYyw4
 Content-Type: application/json

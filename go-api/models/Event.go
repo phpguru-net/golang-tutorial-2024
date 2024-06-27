@@ -7,12 +7,12 @@ import (
 )
 
 type Event struct {
-	ID          int64     `binding:"required"`
+	ID          int64
 	Name        string    `binding:"required"`
 	Description string    `binding:"required"`
 	Location    string    `binding:"required"`
 	DateTime    time.Time `binding:"required"`
-	UserID      int       `binding:"required"`
+	UserID      int
 }
 
 var events = []Event{}
@@ -36,11 +36,11 @@ func (e *Event) Save() error {
 	return err
 }
 
-func GetAllEvents() ([]Event, error) {
+func GetAllEvents(userId int64) ([]Event, error) {
 	var events []Event
 
-	query := "SELECT * from events"
-	rows, err := db.GetDB().Query(query)
+	query := "SELECT * from events where user_id = ?"
+	rows, err := db.GetDB().Query(query, userId)
 	if err != nil {
 		return nil, err
 	}

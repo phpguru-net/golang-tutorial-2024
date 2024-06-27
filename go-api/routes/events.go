@@ -9,7 +9,8 @@ import (
 )
 
 func getEventsHandler(c *gin.Context) {
-	var events, err = models.GetAllEvents()
+	userId := c.GetInt64("userId")
+	var events, err = models.GetAllEvents(userId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)
 		return
@@ -24,7 +25,8 @@ func postEventsHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, "Could not parse data")
 		return
 	}
-	event.UserID = 1
+	userId := c.GetInt64("userId")
+	event.UserID = int(userId)
 	err = event.Save()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{

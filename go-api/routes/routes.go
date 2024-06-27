@@ -2,12 +2,19 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	"phpguru.net/go-api/middlewares"
 )
 
 func RegisterRoutes(server *gin.Engine) {
-	server.GET("/events", getEventsHandler)
-	server.GET("/events/:id", getEventHandler)
-	server.POST("/events", postEventsHandler)
-	server.PUT("/events/:id", updateEventHandler)
-	server.DELETE("/events/:id", deleteEventHandler)
+	privateGroups := server.Group("/")
+	privateGroups.Use(middlewares.Authorization)
+
+	privateGroups.GET("/events", getEventsHandler)
+	privateGroups.GET("/events/:id", middlewares.Authorization, getEventHandler)
+	privateGroups.POST("/events", middlewares.Authorization, postEventsHandler)
+	privateGroups.PUT("/events/:id", middlewares.Authorization, updateEventHandler)
+	privateGroups.DELETE("/events/:id", middlewares.Authorization, deleteEventHandler)
+
+	server.POST("/register", postRegisterUserHandler)
+	server.POST("/login", postLoginHandler)
 }
